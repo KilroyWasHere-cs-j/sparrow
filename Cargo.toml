@@ -2,5 +2,5 @@
 resolver = "2"
 members = [
     "src-tauri",
-    "crates/ft8",
+    "crates/aprs",
 ]
