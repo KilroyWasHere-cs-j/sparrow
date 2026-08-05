@@ -14,9 +14,6 @@
 <main class="container">
   <h1>Welcome to Sparrow</h1>
 
-
-  <p>Click on the Tauri, Vite, and SvelteKit logos to learn more.</p>
-
   <form class="row" onsubmit={greet}>
     <input id="greet-input" placeholder="Enter a name..." bind:value={name} />
     <button type="submit">Greet</button>
