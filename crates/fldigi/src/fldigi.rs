@@ -13,8 +13,9 @@ impl Fldigi {
         }
     }
 
-    pub fn get_version(&self) -> Result<String, xmlrpc::Error> {
-        let request = Request::new("fldigi.version").call_url(self.fldigi_url.as_str())?;
+    pub fn get_version(&self) {
+        let request = Request::new("fldigi.version").call_url(self.fldigi_url.as_str()).unwrap();
+        println!("{:?}", request);
     }
 }
 
