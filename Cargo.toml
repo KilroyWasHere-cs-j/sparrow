@@ -1,6 +1,5 @@
 [workspace]
 resolver = "2"
-members = [
+members = ["crates/fldigi", "crates/log", "crates/rtlsdr", "crates/sigint", "crates/testing-hook", "crates/wsjtx",
     "src-tauri",
-    "crates/aprs",
 ]

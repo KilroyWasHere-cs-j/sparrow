@@ -48,10 +48,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "330a5ed07fa54e4702c9d6c4174f74427fc0ef6e214bbd677ae50a5099946470"
 
 [[package]]
-name = "aprs"
-version = "0.1.0"
-
-[[package]]
 name = "async-broadcast"
 version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3155,7 +3151,6 @@ dependencies = [
 name = "sparrow"
 version = "0.1.0"
 dependencies = [
- "aprs",
  "ft8",
  "serde",
  "serde_json",

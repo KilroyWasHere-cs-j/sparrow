@@ -3,9 +3,11 @@ node_modules
 
 # Cargo workspace build output (workspace root, not src-tauri/target)
 /target
-/build
-/.svelte-kit
-/package
+
+# SvelteKit build output (frontend/, not workspace root)
+/frontend/build
+/frontend/.svelte-kit
+/frontend/package
 .env
 .env.*
 !.env.example
