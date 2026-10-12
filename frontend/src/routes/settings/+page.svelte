@@ -4,6 +4,7 @@
   let callsign = $state("");
   let greetMsg = $state("");
 
+  /** @param {Event} event */
   async function greet(event) {
     event.preventDefault();
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/

@@ -6,6 +6,10 @@ import adapter from "@sveltejs/adapter-static";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
+  compilerOptions: {
+    // The starter home page has leftover CSS for elements that no longer exist; hide just those notices.
+    warningFilter: (warning) => warning.code !== "css_unused_selector",
+  },
   kit: {
     adapter: adapter({
       fallback: "index.html",

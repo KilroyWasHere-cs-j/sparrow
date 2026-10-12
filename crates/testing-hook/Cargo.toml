@@ -1,7 +1,0 @@
-[package]
-name = "testing-hook"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
-rtlsdr = { path = "../rtlsdr" }

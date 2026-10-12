@@ -1,5 +1,3 @@
 [workspace]
 resolver = "2"
-members = ["crates/fldigi", "crates/log", "crates/rtlsdr", "crates/sigint", "crates/testing-hook", "crates/wsjtx",
-    "src-tauri",
-]
+members = ["sparrow", "src-tauri"]

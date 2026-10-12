@@ -1,0 +1,47 @@
+/* App-wide theme. Dark is the only theme (default), regardless of OS setting. */
+:root {
+  color-scheme: dark; /* makes native controls (scrollbars, inputs) render dark too */
+
+  --bg: #14161a;
+  --surface: #1d2026;
+  --border: #343944;
+  --text: #e6e8eb;
+  --muted: #9aa1ad;
+  --accent: #24c8db;
+
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--text);
+  background-color: var(--bg);
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: inherit;
+}
+
+input,
+button {
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  font: inherit;
+  font-weight: 500;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover {
+  border-color: var(--accent);
+}
