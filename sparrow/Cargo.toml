@@ -7,3 +7,4 @@ edition = "2024"
 rtlsdr_mt = "2.2.0"
 cpal = "0.18.2"
 hound = "3.5.1"
+ft8 = { git = "https://github.com/ibelinp/ft8" }

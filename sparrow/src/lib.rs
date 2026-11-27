@@ -11,6 +11,9 @@ use crate::radio::rtlsdr::RtlStream;
 // The settings types, so the app can build a RadioConfig to pass to start_radio / update_radio.
 pub use crate::radio::rtlsdr::{Gain, Mode, RadioConfig};
 
+// Audio-to-text decoders for the digital modes.
+pub use crate::dig::decode_ft8;
+
 mod dig;
 mod radio;
 
