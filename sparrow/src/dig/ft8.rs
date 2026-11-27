@@ -5,7 +5,8 @@ use ::ft8::{Monitor, MonitorConfig};
 use super::SAMPLE_RATES;
 
 // How hard to search each slot. These are the values ft8_lib's own decoder uses. The crate's
-// shortcut function only checks the 30 strongest candidates, which misses stations on a busy band.
+// shortcut function only checks the 30 strongest candidates, so it can never return more than 30
+// messages, which a busy band exceeds.
 const MAX_CANDIDATES: usize = 140;
 const MIN_SYNC_SCORE: i16 = 10; // how much a candidate must look like FT8's timing pattern
 const LDPC_ITERATIONS: usize = 25; // error correction passes per candidate
@@ -103,6 +104,27 @@ mod tests {
         // Noise swinging well past the signal's own 0.4 peak
         Noise::new(1).add_to(&mut audio, 0.5);
         assert_eq!(decode_ft8(&audio, 12_000), ["CQ K1ABC FN42"]);
+    }
+
+    #[test]
+    fn decodes_a_crowded_band() {
+        // 40 stations at once, 65 Hz apart: more than the crate's shortcut function can return
+        let calls: Vec<String> = ('A'..='Z')
+            .map(|c| format!("K1AA{c}"))
+            .chain(('A'..='N').map(|c| format!("K1AB{c}")))
+            .collect();
+        let stations: Vec<_> = calls
+            .iter()
+            .enumerate()
+            .map(|(i, call)| ("CQ", call.as_str(), "FN42", 300.0 + 65.0 * i as f32))
+            .collect();
+        // Turned down so the sum of all of them stays in range
+        let audio: Vec<f32> = slot(&stations, 12_000).iter().map(|s| s * 0.05).collect();
+
+        let mut lines = decode_ft8(&audio, 12_000);
+        lines.sort();
+        let expected: Vec<String> = calls.iter().map(|c| format!("CQ {c} FN42")).collect();
+        assert_eq!(lines, expected);
     }
 
     #[test]

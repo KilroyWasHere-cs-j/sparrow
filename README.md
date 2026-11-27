@@ -2,7 +2,7 @@
 
 A desktop app for field and off-grid communications over amateur radio. It is built with Rust and Tauri, with a Svelte frontend. The goal is one app that can listen to the airwaves with an RTL-SDR dongle and, later, send and receive digital modes (FT8/FT4, APRS, fldigi modes) through a radio.
 
-> **Status: early prototype.** Only RTL-SDR receive and audio playback work today. The digital modes are researched and planned, not implemented. See [Roadmap](#roadmap).
+> **Status: early prototype.** RTL-SDR receive and audio playback work in the app. APRS and FT8 receive decoding exist as library functions that the app doesn't call yet. See [Roadmap](#roadmap).
 
 ## What works today
 
@@ -10,8 +10,29 @@ A desktop app for field and off-grid communications over amateur radio. It is bu
 - Demodulation modes: WFM, NFM, AM, USB, LSB, CW.
 - Live controls while the radio runs: frequency, mode, gain (auto or manual), PPM correction, volume and squelch. Device index and sample rate need a restart.
 - Start and stop the radio from the UI. It is also stopped cleanly on window close, Ctrl+C and app exit, so the dongle is released.
+- Decode APRS and FT8 from audio to text (library only, see [Decoding audio](#decoding-audio)).
 
 The `FT8` and `APRS` pages in the UI are placeholders.
+
+## Decoding audio
+
+`sparrow-core` has one function per mode. Each takes a chunk of mono audio (samples from -1.0 to 1.0, 8 to 384 kHz) and returns one line of text per decoded message.
+
+```rust
+use sparrow_core::{decode_aprs, decode_ft8};
+
+// APRS: 1200 baud packets from an FM receiver. Pass a few seconds or more.
+for line in decode_aprs(&audio, 48_000) {
+    println!("{line}"); // N0CALL-9>APRS,WIDE1-1*:>status text
+}
+
+// FT8: one 15 s slot, starting on :00, :15, :30 or :45 UTC (about 2 s of slack).
+for line in decode_ft8(&slot, 12_000) {
+    println!("{line}"); // CQ K1ABC FN42
+}
+```
+
+Calls don't remember anything between chunks, so an APRS packet cut in half at a chunk edge is lost. The APRS payload is returned as sent, not broken into position or other fields.
 
 ## Hardware
 
@@ -67,7 +88,7 @@ Start with the volume low, and pick a strong local station when testing.
 ## Repo layout
 
 ```
-sparrow/      sparrow-core: the radio library (RTL-SDR capture, demodulation, audio output)
+sparrow/      sparrow-core: the radio library (RTL-SDR capture, demodulation, audio output, APRS/FT8 decoders)
 src-tauri/    Tauri app: exposes start_radio / update_radio / stop_radio to the UI
 frontend/     SvelteKit UI (radio controls, plus FT8, APRS and settings pages)
 docs/         Decisions log, hardware notes, per-protocol research
@@ -87,8 +108,10 @@ How the FM path works is explained in [docs/rtlsdr-fm-playback.md](docs/rtlsdr-f
 | Item | State |
 |---|---|
 | RTL-SDR receive, demodulation, live controls | Done |
-| FT8/FT4 using [`ibelinp/ft8`](https://github.com/ibelinp/ft8) | Decided, in [research](docs/research/ft8.md), not wired up |
-| APRS (AFSK modem vs. Direwolf over KISS) | Open decision, see [decisions](docs/decisions.md) and [research](docs/research/aprs.md) |
+| FT8 receive using [`ibelinp/ft8`](https://github.com/ibelinp/ft8) | Library function done, not wired into the app |
+| FT4, FT8 transmit | Not started, see [research](docs/research/ft8.md) |
+| APRS receive (own AFSK modem) | Library function done, not wired into the app |
+| APRS transmit | Open, see [decisions](docs/decisions.md) and [research](docs/research/aprs.md) |
 | fldigi integration over XML-RPC | Researched, see [docs/research/fldigi.md](docs/research/fldigi.md) |
 | Digirig audio and PTT (CM108 GPIO or serial) | Planned |
 

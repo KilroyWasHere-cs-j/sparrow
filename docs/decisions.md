@@ -38,3 +38,20 @@ this file stays short and links out.
   Direwolf as an external software TNC and only speak KISS over the network/serial?
   This decides whether `aprs-transport-kiss` gets used at all, and whether we need to
   write our own AFSK modem in addition to the AX.25 encoder gap already identified.
+
+## 2026-11-26: APRS receive uses our own modem
+
+- Decided: `sparrow-core` demodulates the 1200 baud audio tones, unpacks the AX.25 frames and
+  writes them as text itself. No Direwolf, and no APRS crate.
+- Why: the goal is a function that takes audio and returns text, with no outside program to
+  install or run. Receive needs no new dependencies.
+- Status: done for receive (`sparrow/src/dig/aprs.rs`). Payload fields (position, messages) are
+  not parsed. Transmit, and whether to use `libaprs-engine` for payload parsing, are still open.
+
+## 2026-11-26: Decoders live in `sparrow-core`
+
+- Decided: `decode_aprs` and `decode_ft8` are stateless library functions: one chunk of audio in,
+  lines of text out.
+- FT8 wraps `ibelinp/ft8`, now also a dependency of `sparrow-core`, and searches 140 candidates
+  per slot instead of the crate shortcut's 30.
+- Status: done. Not yet connected to the live radio or the UI.

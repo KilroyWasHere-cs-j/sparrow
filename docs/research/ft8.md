@@ -5,6 +5,10 @@
 `ibelinp/ft8`, https://github.com/ibelinp/ft8, added as a git dependency (not published
 to crates.io as of 2026-08-05).
 
+Update 2026-11-26: receive is wrapped by `sparrow_core::decode_ft8`
+(`sparrow/src/dig/ft8.rs`). Checked against two off-air recordings from `ft8_lib`'s test set, it
+decoded 4 of the 6 messages in their reference lists, with no wrong ones.
+
 ## What it is
 
 A pure-Rust port of `ft8_lib` (the MIT-licensed C reference implementation, by Kārlis

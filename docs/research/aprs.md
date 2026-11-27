@@ -2,6 +2,9 @@
 
 Status as of 2026-08-05: open, no crate chosen yet.
 
+Update 2026-11-26: receive is done without any APRS crate, in `sparrow/src/dig/aprs.rs` (see
+`docs/decisions.md`). The notes below still apply to transmit and payload parsing.
+
 ## Summary
 
 Unlike FT8, no single Rust crate matches the completeness or track record of
