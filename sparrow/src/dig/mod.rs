@@ -1,7 +1,9 @@
 //! Digital mode decoders: a chunk of audio goes in, text comes out.
 
+mod aprs;
 mod ft8;
 
+pub use self::aprs::decode_aprs;
 pub use self::ft8::decode_ft8;
 
 use std::ops::RangeInclusive;

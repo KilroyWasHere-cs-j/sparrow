@@ -12,7 +12,7 @@ use crate::radio::rtlsdr::RtlStream;
 pub use crate::radio::rtlsdr::{Gain, Mode, RadioConfig};
 
 // Audio-to-text decoders for the digital modes.
-pub use crate::dig::decode_ft8;
+pub use crate::dig::{decode_aprs, decode_ft8};
 
 mod dig;
 mod radio;
